@@ -1,7 +1,8 @@
 {
-  "name": "tscpaths",
+  "name": "@emirguvenni/tscpaths",
   "version": "0.1.0",
   "description": "Replace absolute paths to relative paths after typescript compilation",
+  "private": false,
   "main": "cjs/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -23,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/joonhocho/tscpaths.git"
+    "url": "https://github.com/EmirGuvenni/tscpaths.git"
   },
   "keywords": [
     "typescript",
@@ -34,12 +35,15 @@
     "compilation",
     "tsc"
   ],
-  "author": "Joon Ho Cho <joonho1101@gmail.com>",
+  "author": "Emir Güvenni <contact@emirguvenni.com>",
+  "contributors": [
+    "Joon Ho Cho <joonho1101@gmail.com>"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/joonhocho/tscpaths/issues"
+    "url": "https://github.com/EmirGuvenni/tscpaths/issues"
   },
-  "homepage": "https://github.com/joonhocho/tscpaths#readme",
+  "homepage": "https://github.com/EmirGuvenni/tscpaths",
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.24",
