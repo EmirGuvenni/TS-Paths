@@ -1,9 +1,9 @@
 #! /usr/bin/env node
 
 // tslint:disable no-console
-import * as program from 'commander';
+import {program} from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { sync } from 'globby';
+import { globbySync } from 'globby';
 import { dirname, relative, resolve } from 'path';
 import { loadConfig } from './util';
 
@@ -98,8 +98,7 @@ const exts = ['.js', '.jsx', '.ts', '.tsx', '.d.ts', '.json'];
 let replaceCount = 0;
 
 const absToRel = (modulePath: string, outFile: string): string => {
-  const alen = aliases.length;
-  for (let j = 0; j < alen; j += 1) {
+  for (let j = 0; j < aliases.length; j++) {
     const { prefix, aliasPaths } = aliases[j];
 
     if (modulePath.startsWith(prefix)) {
@@ -108,16 +107,14 @@ const absToRel = (modulePath: string, outFile: string): string => {
       const outRel = relative(basePath, outFile);
       verboseLog(`${outRel} (source: ${relative(basePath, srcFile)}):`);
       verboseLog(`\timport '${modulePath}'`);
-      const len = aliasPaths.length;
-      for (let i = 0; i < len; i += 1) {
-        const apath = aliasPaths[i];
-        const moduleSrc = resolve(apath, modulePathRel);
+      for (let i = 0; i < aliasPaths.length; i++) {
+        const moduleSrc = resolve(aliasPaths[i], modulePathRel);
         if (
           existsSync(moduleSrc) ||
           exts.some((ext) => existsSync(moduleSrc + ext))
         ) {
           const rel = toRelative(dirname(srcFile), moduleSrc);
-          replaceCount += 1;
+          replaceCount++;
           verboseLog(
             `\treplacing '${modulePath}' -> '${rel}' referencing ${relative(
               basePath,
@@ -159,21 +156,20 @@ const replaceAlias = (text: string, outFile: string): string =>
     );
 
 // import relative to absolute path
-const files = sync(`${outPath}/**/*.{js,jsx,ts,tsx}`, {
+const files = globbySync(`${outPath}/**/*.{js,jsx,ts,tsx}`, {
   dot: true,
   noDir: true,
-} as any).map((x) => resolve(x));
+} as any).map((x: any) => resolve(x));
 
 let changedFileCount = 0;
 
-const flen = files.length;
-for (let i = 0; i < flen; i += 1) {
+for (let i = 0; i < files.length; i++) {
   const file = files[i];
   const text = readFileSync(file, 'utf8');
   const prevReplaceCount = replaceCount;
   const newText = replaceAlias(text, file);
   if (text !== newText) {
-    changedFileCount += 1;
+    changedFileCount++;
     console.log(`${file}: replaced ${replaceCount - prevReplaceCount} paths`);
     writeFileSync(file, newText, 'utf8');
   }
