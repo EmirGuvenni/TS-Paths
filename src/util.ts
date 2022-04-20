@@ -1,6 +1,6 @@
 import { dirname, resolve } from 'path';
 
-export interface IRawTSConfig {
+interface IRawTSConfig {
   extends?: string;
   compilerOptions?: {
     baseUrl?: string;
@@ -9,7 +9,7 @@ export interface IRawTSConfig {
   };
 }
 
-export interface ITSConfig {
+interface ITSConfig {
   baseUrl?: string;
   outDir?: string;
   paths?: { [key: string]: string[] };
