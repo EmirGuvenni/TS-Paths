@@ -50,6 +50,6 @@
   },
   "dependencies": {
     "commander": "^9.2.0",
-    "globby": "^13.1.1"
+    "fast-glob": "^3.2.11"
   }
 }
