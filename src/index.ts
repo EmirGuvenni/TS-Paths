@@ -1,9 +1,7 @@
-#! /usr/bin/env node
-
 // tslint:disable no-console
-import {program} from 'commander';
+import { program } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { globbySync } from 'globby';
+import * as fg from 'fast-glob';
 import { dirname, relative, resolve } from 'path';
 import { loadConfig } from './util';
 
@@ -15,37 +13,22 @@ program
   .option('-v, --verbose', 'output logs');
 
 program.on('--help', () => {
-  console.log(`
-  $ tscpath -p tsconfig.json
-`);
+  console.log(`$ tscpath -p tsconfig.json`);
 });
 
-program.parse(process.argv);
+program.parse();
 
-const { project, src, out, verbose } = program as {
-  project?: string;
-  src?: string;
-  out?: string;
-  verbose?: boolean;
-};
+const { project, src, out, verbose } = program.opts();
 
-if (!project) {
-  throw new Error('--project must be specified');
-}
-if (!src) {
-  throw new Error('--src must be specified');
-}
+if (!project) throw new Error('--project must be specified');
+if (!src) throw new Error('--src must be specified');
 
 const verboseLog = (...args: any[]): void => {
-  if (verbose) {
-    console.log(...args);
-  }
+  if (verbose) console.log(...args);
 };
 
 const configFile = resolve(process.cwd(), project);
-
 const srcRoot = resolve(src);
-
 const outRoot = out && resolve(out);
 
 console.log(
@@ -54,15 +37,10 @@ console.log(
 
 const { baseUrl, outDir, paths } = loadConfig(configFile);
 
-if (!baseUrl) {
-  throw new Error('compilerOptions.baseUrl is not set');
-}
-if (!paths) {
-  throw new Error('compilerOptions.paths is not set');
-}
-if (!outDir) {
-  throw new Error('compilerOptions.outDir is not set');
-}
+if (!baseUrl) throw new Error('compilerOptions.baseUrl is not set');
+if (!paths) throw new Error('compilerOptions.paths is not set');
+if (!outDir) throw new Error('compilerOptions.outDir is not set');
+
 verboseLog(`baseUrl: ${baseUrl}`);
 verboseLog(`outDir: ${outDir}`);
 verboseLog(`paths: ${JSON.stringify(paths, null, 2)}`);
@@ -156,10 +134,10 @@ const replaceAlias = (text: string, outFile: string): string =>
     );
 
 // import relative to absolute path
-const files = globbySync(`${outPath}/**/*.{js,jsx,ts,tsx}`, {
+const files = fg.sync(`${outPath}/**/*.{js,jsx,ts,tsx}`, {
   dot: true,
-  noDir: true,
-} as any).map((x: any) => resolve(x));
+  onlyFiles: true,
+}).map((x) => resolve(x));
 
 let changedFileCount = 0;
 
