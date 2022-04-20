@@ -38,10 +38,6 @@
   "homepage": "https://github.com/EmirGuvenni/tscpaths",
   "devDependencies": {
     "@types/node": "^17.0.24",
-    "prettier": "^2.6.2",
-    "tslint": "^6.1.3",
-    "tslint-config-airbnb": "^5.11.1",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^4.6.3"
   },
   "dependencies": {
