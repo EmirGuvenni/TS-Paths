@@ -4,11 +4,7 @@
 name: Node.js Package
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        required: true
-        description: 'Version'
+  workflow_dispatch
 
 jobs:
   build:
