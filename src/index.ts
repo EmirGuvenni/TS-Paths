@@ -1,49 +1,28 @@
 // tslint:disable no-console
-import { program } from 'commander';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import * as fg from 'fast-glob';
 import { dirname, relative, resolve } from 'path';
+import * as fg from 'fast-glob';
+
 import { loadConfig } from './util';
 
-program
-  .version('0.0.1')
-  .option('-p, --project <file>', 'path to tsconfig.json')
-  .option('-s, --src <path>', 'source root path')
-  .option('-o, --out <path>', 'output root path')
-  .option('-v, --verbose', 'output logs')
-  .on('--help', () => {
-    console.log(`$ tspaths -p tsconfig.json`);
-  })
-  .parse();
-
-const { project, src, out, verbose } = program.opts();
-
-if (!project) throw new Error('--project must be specified');
-if (!src) throw new Error('--src must be specified');
-
-const configFile = resolve(process.cwd(), project);
+const configFile = resolve(process.cwd(), 'tsconfig.json');
 const { baseUrl, outDir, paths } = loadConfig(configFile);
 
 if (!baseUrl) throw new Error('compilerOptions.baseUrl is not set');
 if (!paths) throw new Error('compilerOptions.paths is not set');
 if (!outDir) throw new Error('compilerOptions.outDir is not set');
 
-const srcRoot = resolve(src);
-const outRoot = out && resolve(out);
+const srcRoot = resolve(baseUrl);
+const outRoot = outDir && resolve(outDir);
 const configDir = dirname(configFile);
 const basePath = resolve(configDir, baseUrl);
 const outPath = outRoot || resolve(basePath, outDir);
 
-const verboseLog = (...args: any[]): void => {
-  if (verbose) console.log(...args);
-};
+console.log(`baseUrl: ${baseUrl}`);
+console.log(`outDir: ${outDir}`);
 
-verboseLog(`baseUrl: ${baseUrl}`);
-verboseLog(`outDir: ${outDir}`);
-verboseLog(`paths: ${JSON.stringify(paths, null, 2)}`);
-
-verboseLog(`basePath: ${basePath}`);
-verboseLog(`outPath: ${outPath}`);
+console.log(`basePath: ${basePath}`);
+console.log(`outPath: ${outPath}`);
 
 const aliases = Object.keys(paths)
   .map((alias) => ({
@@ -53,7 +32,6 @@ const aliases = Object.keys(paths)
     ),
   }))
   .filter(({ prefix }) => prefix);
-verboseLog(`aliases: ${JSON.stringify(aliases, null, 2)}`);
 
 let replaceCount = 0;
 
@@ -68,8 +46,8 @@ const absToRel = (modulePath: string, outFile: string): string => {
       const srcFile = resolve(srcRoot, relative(outPath, outFile));
       const outRel = relative(basePath, outFile);
 
-      verboseLog(`${outRel} (source: ${relative(basePath, srcFile)}):`);
-      verboseLog(`\timport '${modulePath}'`);
+      console.log(`${outRel} (source: ${relative(basePath, srcFile)}):`);
+      console.log(`\timport '${modulePath}'`);
 
       for (let i = 0; i < aliasPaths.length; i++) {
         const moduleSrc = resolve(aliasPaths[i], modulePathRel);
@@ -79,7 +57,7 @@ const absToRel = (modulePath: string, outFile: string): string => {
         ) {
           const rel = relative(dirname(srcFile), moduleSrc);
 
-          verboseLog(
+          console.log(
             `\treplacing '${modulePath}' -> '${rel}' referencing ${relative(
               basePath,
               moduleSrc
