@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, relative, resolve } from 'path';
 import * as fg from 'fast-glob';
