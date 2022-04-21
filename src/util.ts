@@ -16,6 +16,8 @@ interface ITSConfig {
 }
 
 export const loadConfig = (file: string): ITSConfig => {
+  if (!file) file = resolve(process.cwd(), 'tsconfig.json');
+
   const {
     extends: ext,
     compilerOptions: { baseUrl, outDir, paths } = {

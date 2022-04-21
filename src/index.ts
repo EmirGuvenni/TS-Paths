@@ -48,7 +48,6 @@ const absToRel = (modulePath: string, outFile: string): string => {
       const outRel = relative(basePath, outFile);
 
       console.log(`${outRel} (source: ${relative(basePath, srcFile)}):`);
-      console.log(`\timport '${modulePath}'`);
 
       for (let i = 0; i < aliasPaths.length; i++) {
         const moduleSrc = resolve(aliasPaths[i], modulePathRel);
@@ -101,7 +100,6 @@ let changedFileCount = 0;
 for (let i = 0; i < files.length; i++) {
   const file = files[i];
   const text = readFileSync(file, 'utf8');
-  const prevReplaceCount = replaceCount;
   const newText = text
     .replace(/(?:import|require)\(['"]([^'"]*)['"]\)/g, (orig, matched) =>
       replaceImportStatement(orig, matched, file)
@@ -112,7 +110,6 @@ for (let i = 0; i < files.length; i++) {
 
   if (text !== newText) {
     changedFileCount++;
-    console.log(`${file}: replaced ${replaceCount - prevReplaceCount} paths`);
     writeFileSync(file, newText, 'utf8');
   }
 }
