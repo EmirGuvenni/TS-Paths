@@ -1,6 +1,6 @@
 {
-  "name": "tspaths",
-  "version": "0.1.2",
+  "name": "@emirguvenni/tspaths",
+  "version": "0.1.0",
   "description": "Replace absolute paths to relative paths after typescript compilation",
   "main": "cjs/index.js",
   "module": "lib/index.js",
@@ -12,15 +12,11 @@
   "scripts": {
     "build": "yarn build:esm && yarn build:cjs",
     "build:esm": "tsc -p ./tsconfig.esm.json",
-    "build:cjs": "tsc -p ./tsconfig.cjs.json",
-    "format": "prettier --write \"./*.{js,jsx,ts,tsx}\" \"./src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "tslint -c ./tslint.json \"src/**/*\"",
-    "lint:fix": "tslint --fix -c ./tslint.json \"src/**/*\"",
-    "start": "yarn clear && yarn format && yarn lint:fix && yarn test && yarn build"
+    "build:cjs": "tsc -p ./tsconfig.cjs.json"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/EmirGuvenni/tscpaths.git"
+    "url": "https://github.com/EmirGuvenni/TS-Paths"
   },
   "keywords": [
     "typescript",
@@ -34,9 +30,9 @@
   "author": "Emir Güvenni <contact@emirguvenni.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/EmirGuvenni/tscpaths/issues"
+    "url": "https://github.com/EmirGuvenni/TS-Paths/issues"
   },
-  "homepage": "https://github.com/EmirGuvenni/tscpaths",
+  "homepage": "https://github.com/EmirGuvenni/TS-Paths",
   "devDependencies": {
     "@types/node": "^17.0.24",
     "typescript": "^4.6.3"
