@@ -1,7 +1,7 @@
 {
   "name": "@emirguvenni/tspaths",
   "version": "1.0.1",
-  "description": "Replace absolute paths to relative paths after typescript compilation",
+  "description": "A package to resolve path aliases in TypeScript or JavaScript files.",
   "main": "cjs/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
