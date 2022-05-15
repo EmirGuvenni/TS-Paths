@@ -1,6 +1,6 @@
 {
   "name": "@emirguvenni/tspaths",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A package to resolve path aliases in TypeScript or JavaScript files.",
   "main": "cjs/index.js",
   "module": "lib/index.js",
