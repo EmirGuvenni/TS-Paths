@@ -53,7 +53,10 @@ const absToRel = (modulePath: string, outFile: string): string => {
         const moduleSrc = resolve(aliasPaths[i], modulePathRel);
         if (
           existsSync(moduleSrc) ||
-          exts.some((ext) => existsSync(moduleSrc + ext))
+          exts.some((ext) => {
+            if (moduleSrc.endsWith(ext)) return existsSync(moduleSrc);
+            return existsSync(moduleSrc + ext);
+          })
         ) {
           const rel = relative(dirname(srcFile), moduleSrc);
 
