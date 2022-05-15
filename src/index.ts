@@ -29,7 +29,7 @@ const aliases = Object.keys(paths)
   .map((alias) => ({
     prefix: alias.replace(/\*$/, ''),
     aliasPaths: paths[alias as keyof typeof paths].map((p) =>
-      resolve(basePath, p.replace(/\*$/, ''))
+      resolve(outPath, p.replace(/\*$/, ''))
     ),
   }))
   .filter(({ prefix }) => prefix);
@@ -53,10 +53,7 @@ const absToRel = (modulePath: string, outFile: string): string => {
         const moduleSrc = resolve(aliasPaths[i], modulePathRel);
         if (
           existsSync(moduleSrc) ||
-          exts.some((ext) => {
-            if (moduleSrc.endsWith(ext)) return existsSync(moduleSrc);
-            return existsSync(moduleSrc + ext);
-          })
+          exts.some((ext) => existsSync(moduleSrc + ext))
         ) {
           const rel = relative(dirname(srcFile), moduleSrc);
 
